@@ -8,5 +8,8 @@
     "navigationBarTitleText": "酒桌游戏",
     "navigationBarTextStyle": "black"
   },
+  "useExtendedLib": {
+    "weui": true
+  },
   "sitemapLocation": "sitemap.json"
 }

@@ -51,12 +51,21 @@
   <!-- 抽卡池 -->
   <view class="card-pool">
     <view class="card-container">
-      <view class="card {{isCardVisible ? 'visible' : ''}} {{isCardShaking ? 'shake' : ''}}">
+      <view class="card {{isCardVisible ? 'visible' : ''}} {{isCardShaking ? 'shake' : ''}} {{isScrolling ? 'scrolling' : ''}}">
         <view class="card-header">
           <view class="card-corner top-left"></view>
           <view class="card-corner top-right"></view>
         </view>
-        <view class="card-content">{{currentCard}}</view>
+        <view class="card-content">
+          <block>
+            <view class="scroll-content">
+              <view class="scroll-item top">{{scrollTop}}</view>
+              <view class="scroll-item middle">{{scrollMiddle}}</view>
+              <view class="scroll-item bottom">{{scrollBottom}}</view>
+            </view>
+          </block>
+
+        </view>
         <view class="card-footer">
           <view class="card-corner bottom-left"></view>
           <view class="card-corner bottom-right"></view>
@@ -66,9 +75,9 @@
   </view>
   
   <!-- 抽卡按钮 -->
-  <view class="draw-button" bindtap="drawCard">
+  <view class="draw-button" bindtap="drawCard" disabled="{{isDrawing}}">
     <view class="button-inner">
-      <text class="button-text">抽卡</text>
+      <text class="button-text">{{isDrawing ? '抽卡中...' : '抽卡'}}</text>
       <view class="button-effect"></view>
     </view>
   </view>

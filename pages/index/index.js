@@ -5,9 +5,13 @@ Page({
     isCardVisible: false, // 卡片是否可见
     isCardShaking: false, // 卡片是否在抖动
     isDrawing: false, // 是否正在抽卡，用于防抖
+    isScrolling: false, // 是否正在滚动
+    scrollTop: '', // 滚动的顶部内容
+    scrollMiddle: '', // 滚动的中间内容
+    scrollBottom: '', // 滚动的底部内容
     // 卡牌数据
-   "cards": {
-    "statement": [
+    cards: {
+      statement: [
       "讲一个你最尴尬的事",
       "分享一件你最近开心的事",
       "说一个你最讨厌的人",
@@ -59,7 +63,7 @@ Page({
       "讲一件你做过最疯狂的事",
       "说一个你此刻最想说的话"
     ],
-    "action": [
+    action: [
       "站起来喝酒",
       "做10个俯卧撑",
       "模仿一个动物",
@@ -111,7 +115,7 @@ Page({
       "表演“憋尿”",
       "学迈克尔杰克逊的经典动作"
     ],
-    "interaction": [
+    interaction: [
       "和左边的人碰杯",
       "给右边的人讲个笑话",
       "和对面的人击掌",
@@ -163,7 +167,7 @@ Page({
       "和右边的人约定一件事",
       "对一个人说“有你真好”"
     ],
-    "hell": [
+    hell: [
       "喝完一杯酒",
       "连续喝三杯酒",
       "表演一个性感的舞蹈",
@@ -238,30 +242,76 @@ Page({
     // 设置正在抽卡状态
     this.setData({
       isDrawing: true,
-      isCardVisible: false
+      isCardVisible: false,
+      isCardShaking: false
     });
 
-    // 短暂延迟后显示新卡片并添加动画
+    // 短暂延迟后开始滚动效果
     setTimeout(() => {
       const category = this.data.selectedCategory;
       const cards = this.data.cards[category];
-      const randomIndex = Math.floor(Math.random() * cards.length);
-      const randomCard = cards[randomIndex];
-
-      // 显示卡片并添加抖动动画
+      
+      // 显示滚动效果
       this.setData({
-        currentCard: randomCard,
+        isScrolling: true,
         isCardVisible: true,
-        isCardShaking: true
+        currentCard: ''
       });
-
-      // 动画结束后取消抖动状态并重置抽卡状态
-      setTimeout(() => {
+      
+      // 实现循环滚动逻辑
+      let scrollInterval;
+      let scrollCount = 0;
+      const maxScrollCount = 10; // 滚动次数
+      
+      // 开始循环滚动
+      scrollInterval = setInterval(() => {
+        // 随机选择三个不同的卡片
+        const topIndex = Math.floor(Math.random() * cards.length);
+        let middleIndex = Math.floor(Math.random() * cards.length);
+        let bottomIndex = Math.floor(Math.random() * cards.length);
+        
+        // 确保三个索引不同
+        while (middleIndex === topIndex) {
+          middleIndex = Math.floor(Math.random() * cards.length);
+        }
+        while (bottomIndex === middleIndex || bottomIndex === topIndex) {
+          bottomIndex = Math.floor(Math.random() * cards.length);
+        }
+        
+        // 更新滚动内容
         this.setData({
-          isCardShaking: false,
-          isDrawing: false
+          scrollTop: cards[topIndex],
+          scrollMiddle: cards[middleIndex],
+          scrollBottom: cards[bottomIndex]
         });
-      }, 600); // 与动画时间一致
+        
+        scrollCount++;
+        
+        // 滚动一定次数后停止
+        if (scrollCount >= maxScrollCount) {
+          clearInterval(scrollInterval);
+          
+          // 选择最终卡片
+          const finalIndex = Math.floor(Math.random() * cards.length);
+          const finalCard = cards[finalIndex];
+          
+          // 停止滚动，显示最终卡片
+          this.setData({
+            isScrolling: false,
+            currentCard: finalCard,
+            isCardVisible: true,
+            isCardShaking: true
+          });
+          
+          // 动画结束后取消抖动状态并重置抽卡状态
+          setTimeout(() => {
+            this.setData({
+              isCardShaking: false,
+              isDrawing: false
+            });
+          }, 600); // 与动画时间一致
+        }
+      }, 150); // 每150毫秒更新一次
     }, 300);
   }
 });
