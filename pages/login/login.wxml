@@ -1,0 +1,19 @@
+<view class="login-container">
+  <view class="login-header">
+    <image class="logo" src="/images/logo.png" mode="aspectFit"></image>
+    <text class="title">酒桌游戏</text>
+    <text class="subtitle">登录获取更多功能</text>
+  </view>
+  
+  <view class="login-body">
+    <button class="login-btn" bindtap="getUserInfo">
+      <image class="wechat-icon" src="/images/wechat.png" mode="aspectFit"></image>
+      <text class="login-text">微信登录</text>
+    </button>
+    
+    <view class="login-tip">
+      <text>点击登录将获取您的微信头像、昵称等信息</text>
+      <text class="tip-desc">我们将严格保护您的个人信息</text>
+    </view>
+  </view>
+</view>

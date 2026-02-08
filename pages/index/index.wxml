@@ -8,8 +8,13 @@
   
   <!-- 标题区域 -->
   <view class="header">
-    <view class="title">酒桌游戏</view>
-    <view class="subtitle">让聚会更有趣</view>
+    <view class="title-container">
+      <view class="title">酒桌游戏</view>
+      <view class="subtitle">让聚会更有趣</view>
+    </view>
+    <view class="user-entry" bindtap="navigateToUser">
+      <image class="user-icon" src="/images/user.png" mode="aspectFit"></image>
+    </view>
   </view>
   
   <!-- 分类选择 -->

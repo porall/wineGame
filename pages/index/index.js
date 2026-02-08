@@ -313,5 +313,12 @@ Page({
         }
       }, 150); // 每150毫秒更新一次
     }, 300);
+  },
+
+  // 跳转到用户信息页面
+  navigateToUser() {
+    wx.switchTab({
+      url: '/pages/user/user'
+    });
   }
 });

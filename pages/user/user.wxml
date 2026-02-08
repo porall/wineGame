@@ -1,0 +1,57 @@
+<view class="user-container">
+  <view class="user-info">
+    <view class="user-avatar">
+      <image src="{{userInfo.avatarUrl}}" mode="aspectFill"></image>
+    </view>
+    <view class="user-details">
+      <text class="user-name">{{userInfo.nickName}}</text>
+      <text class="user-gender">{{userInfo.gender == 1 ? '男' : userInfo.gender == 2 ? '女' : '未知'}}</text>
+      <text class="user-country">{{userInfo.country}} {{userInfo.province}} {{userInfo.city}}</text>
+      <button class="update-btn" bindtap="updateUserInfo" wx:if="{{userInfo.nickName != '未登录'}}">
+        <text class="update-text">更新信息</text>
+      </button>
+    </view>
+  </view>
+  
+  <view class="user-stats">
+    <view class="stat-item">
+      <text class="stat-value">{{gameCount}}</text>
+      <text class="stat-label">游戏次数</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{winCount}}</text>
+      <text class="stat-label">获胜次数</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-value">{{favorCount}}</text>
+      <text class="stat-label">收藏游戏</text>
+    </view>
+  </view>
+  
+  <view class="user-menu">
+    <view class="menu-item" bindtap="navigateToSetting">
+      <text class="menu-icon">⚙️</text>
+      <text class="menu-text">设置</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="navigateToHistory">
+      <text class="menu-icon">📋</text>
+      <text class="menu-text">游戏历史</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="navigateToFavorites">
+      <text class="menu-icon">❤️</text>
+      <text class="menu-text">我的收藏</text>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item" bindtap="navigateToAbout">
+      <text class="menu-icon">ℹ️</text>
+      <text class="menu-text">关于我们</text>
+      <text class="menu-arrow">›</text>
+    </view>
+  </view>
+  
+  <view class="logout-container">
+    <button class="logout-btn" bindtap="logout">退出登录</button>
+  </view>
+</view>
