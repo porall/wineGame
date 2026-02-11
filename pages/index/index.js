@@ -263,5 +263,34 @@ Page({
         });
       }, 600); // 与动画时间一致
     }, 300);
+  },
+
+  // 生命周期函数--监听页面加载
+  onLoad() {
+    // 显示分享菜单
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
+  },
+
+  // 转发给好友
+  onShareAppMessage() {
+    return {
+      title: '酒桌游戏 - 让聚会更有趣',
+      desc: '聚会必备神器，各种有趣的酒桌游戏等你来玩！',
+      path: 'pages/index/index',
+      imageUrl: '/images/logo.png'
+    };
+  },
+
+  // 分享到朋友圈
+  onShareTimeline() {
+    return {
+      title: '酒桌游戏 - 让聚会更有趣',
+      path: 'pages/index/index',
+      imageUrl: '/images/logo.png'
+    };
   }
+
 });
