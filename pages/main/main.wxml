@@ -1,0 +1,29 @@
+<view class="container">
+  <view class="header">
+    <view class="header-left">
+      <text class="greeting-label">Welcome Back</text>
+      <text class="greeting-text">{{greeting}}</text>
+    </view>
+    <view class="avatar-wrapper">
+      <image class="avatar" src="{{userInfo.avatarUrl || '/images/logo.png'}}" mode="aspectFill"></image>
+    </view>
+  </view>
+
+  <view class="section-title">
+    <text class="section-title-text">我的卡组</text>
+  </view>
+
+  <view class="deck-grid">
+    <view class="deck-item" wx:for="{{decks}}" wx:key="id" bindtap="goToDeckDetail" data-id="{{item.id}}">
+      <view class="deck-icon-wrapper" style="background-color: {{item.iconBg}};">
+        <text class="deck-icon">{{item.icon}}</text>
+      </view>
+      <text class="deck-name">{{item.name}}</text>
+      <text class="deck-count">{{item.cards.length}} 张卡牌</text>
+    </view>
+  </view>
+
+  <view class="fab-button" bindtap="goToNewDeck">
+    <text class="fab-icon">+</text>
+  </view>
+</view>

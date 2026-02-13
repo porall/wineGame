@@ -1,12 +1,35 @@
 {
   "pages": [
-    "pages/index/index"
+    "pages/index/index",
+    "pages/main/main",
+    "pages/new-deck/new-deck",
+    "pages/deck-detail/deck-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "酒桌游戏",
     "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#94A3B8",
+    "selectedColor": "#FF6B6B",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "游戏",
+        "iconPath": "images/game.png",
+        "selectedIconPath": "images/game-active.png"
+      },
+      {
+        "pagePath": "pages/main/main",
+        "text": "我的卡组",
+        "iconPath": "images/user.png",
+        "selectedIconPath": "images/user-active.png"
+      }
+    ]
   },
   "sitemapLocation": "sitemap.json"
 }

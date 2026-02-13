@@ -3,6 +3,7 @@ App({
     console.log('小程序启动')
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    decks: []
   }
 })

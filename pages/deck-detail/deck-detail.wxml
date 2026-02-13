@@ -1,0 +1,47 @@
+<view class="container">
+  <view class="header">
+    <view class="header-left">
+      <text class="header-btn" bindtap="goBack">‹</text>
+      <text class="header-title">{{deck.name}}</text>
+    </view>
+    <text class="add-card-btn" bindtap="openModal">新建卡牌</text>
+  </view>
+
+  <scroll-view class="cards-container" scroll-y="true">
+    <view class="cards-grid">
+      <view class="card-item" wx:for="{{deck.cards}}" wx:key="index">
+        <text class="card-text">{{item}}</text>
+      </view>
+    </view>
+    <view class="empty-hint" wx:if="{{deck.cards.length === 0}}">
+      <text class="empty-text">暂无卡牌，点击右上角添加</text>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="modal-mask {{showModal ? 'visible' : ''}}" bindtap="closeModal"></view>
+<view class="modal-content {{showModal ? 'visible' : ''}}">
+  <view class="modal-handle"></view>
+  <view class="modal-header">
+    <text class="modal-title">新建卡牌</text>
+    <text class="modal-close" bindtap="closeModal">×</text>
+  </view>
+  
+  <view class="modal-body">
+    <view class="input-wrapper">
+      <textarea 
+        class="card-input" 
+        placeholder="输入卡牌内容，不超过20字" 
+        maxlength="20"
+        value="{{cardContent}}"
+        bindinput="onCardInput"
+      />
+      <text class="char-count">{{cardContent.length}}/20</text>
+    </view>
+  </view>
+
+  <view class="modal-footer">
+    <button class="btn-cancel" bindtap="closeModal">取消</button>
+    <button class="btn-confirm {{canConfirm ? 'active' : 'disabled'}}" disabled="{{!canConfirm}}" bindtap="addCard">确认</button>
+  </view>
+</view>

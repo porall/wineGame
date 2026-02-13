@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="form-section">
+    <view class="form-item">
+      <text class="form-label">卡组名称</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入卡组名称（必填）" 
+        value="{{deckName}}"
+        bindinput="onNameInput"
+      />
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">选择图标</text>
+      <view class="icon-picker">
+        <view 
+          class="icon-option {{selectedIcon === item.icon ? 'selected' : ''}}" 
+          wx:for="{{iconList}}" 
+          wx:key="icon"
+          bindtap="selectIcon"
+          data-icon="{{item.icon}}"
+          style="background-color: {{item.bg}};"
+        >
+          <text class="icon-emoji">{{item.icon}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">卡组描述</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="选填，描述一下这个卡组的用途吧~" 
+        value="{{deckDesc}}"
+        bindinput="onDescInput"
+      />
+    </view>
+  </view>
+
+  <view class="bottom-bar">
+    <button 
+      class="create-btn {{canCreate ? 'active' : 'disabled'}}" 
+      disabled="{{!canCreate}}"
+      bindtap="createDeck"
+    >
+      创建卡组
+    </button>
+  </view>
+</view>
