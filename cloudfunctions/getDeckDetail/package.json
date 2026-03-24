@@ -1,0 +1,11 @@
+{
+  "name": "getDeckDetail",
+  "version": "1.0.0",
+  "description": "获取卡组详情",
+  "main": "index.js",
+  "author": "wineGame",
+  "license": "MIT",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "likeDeck",
+  "version": "1.0.0",
+  "description": "收藏/取消收藏卡组",
+  "main": "index.js",
+  "author": "wineGame",
+  "license": "MIT",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

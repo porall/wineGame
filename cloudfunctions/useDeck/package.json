@@ -1,0 +1,11 @@
+{
+  "name": "useDeck",
+  "version": "1.0.0",
+  "description": "使用卡组-导入到自己卡组",
+  "main": "index.js",
+  "author": "wineGame",
+  "license": "MIT",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
