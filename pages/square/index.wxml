@@ -1,0 +1,72 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索卡组..." 
+      bindconfirm="onSearch"
+    />
+  </view>
+
+  <!-- 标签筛选 -->
+  <scroll-view class="tags-scroll" scroll-x>
+    <view class="tags-list">
+      <view 
+        class="tag-item {{!tag ? 'active' : ''}}" 
+        bindtap="onSelectTag" 
+        data-tag=""
+      >全部</view>
+      <view 
+        wx:for="{{tags}}" 
+        wx:key="*this"
+        class="tag-item {{tag === item ? 'active' : ''}}" 
+        bindtap="onSelectTag" 
+        data-tag="{{item}}"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+
+  <!-- 卡组列表 -->
+  <view class="deck-list">
+    <view 
+      class="deck-card" 
+      wx:for="{{list}}" 
+      wx:key="_id"
+      bindtap="goToDetail"
+      data-id="{{item._id}}"
+    >
+      <view class="deck-icon" style="background-color: {{item.iconBg || '#FEF3C7'}}">
+        {{item.icon}}
+      </view>
+      <view class="deck-info">
+        <view class="deck-name">{{item.name}}</view>
+        <view class="deck-desc">{{item.description || '暂无描述'}}</view>
+        <view class="deck-meta">
+          <text>❤️ {{item.likes || 0}}</text>
+          <text>👁️ {{item.views || 0}}</text>
+          <text>📖 {{item.uses || 0}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty" wx:if="{{list.length === 0 && !loading}}">
+      <text>暂无卡组，快去发布一个吧～</text>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+
+    <!-- 没有更多 -->
+    <view class="no-more" wx:if="{{!hasMore && list.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+  </view>
+
+  <!-- 发布按钮 -->
+  <view class="fab-button" bindtap="goToPublish">
+    <text>+</text>
+  </view>
+</view>

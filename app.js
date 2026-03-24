@@ -1,6 +1,15 @@
 App({
   onLaunch() {
     console.log('小程序启动')
+    
+    // 初始化云开发
+    if (wx.cloud) {
+      wx.cloud.init({
+        env: 'your-env-id', // TODO: 替换为你的云开发环境ID
+        traceUser: true
+      })
+    }
+    
     // 加载本地存储的卡组数据
     this.loadDecks()
   },
