@@ -18,6 +18,10 @@ Page({
     ]
   },
 
+  /**
+   * 监听卡组名称输入
+   * @param {Object} e - 事件对象
+   */
   onNameInput(e) {
     const name = e.detail.value
     this.setData({
@@ -26,12 +30,20 @@ Page({
     })
   },
 
+  /**
+   * 监听卡组描述输入
+   * @param {Object} e - 事件对象
+   */
   onDescInput(e) {
     this.setData({
       deckDesc: e.detail.value
     })
   },
 
+  /**
+   * 选择图标
+   * @param {Object} e - 事件对象
+   */
   selectIcon(e) {
     const icon = e.currentTarget.dataset.icon
     this.setData({
@@ -39,6 +51,9 @@ Page({
     })
   },
 
+  /**
+   * 创建卡组
+   */
   createDeck() {
     if (!this.data.canCreate) return
 
@@ -52,14 +67,21 @@ Page({
       createdAt: new Date().toISOString()
     }
 
+    // 使用 App 的方法保存数据
     app.globalData.decks = app.globalData.decks || []
     app.globalData.decks.push(newDeck)
+    app.updateDecks(app.globalData.decks)
 
     wx.redirectTo({
       url: `/pages/deck-detail/deck-detail?id=${newDeck.id}`
     })
   },
 
+  /**
+   * 获取图标背景色
+   * @param {string} icon - 图标
+   * @returns {string} 背景色
+   */
   getIconBg(icon) {
     const iconItem = this.data.iconList.find(item => item.icon === icon)
     return iconItem ? iconItem.bg : '#F1F5F9'
