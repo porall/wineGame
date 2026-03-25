@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
 
   // 标签筛选
   if (tag) {
-    where.tags = $.in([tag])
+    where.tags = _.in([tag])
   }
 
   // 搜索关键词（搜索名称和描述）

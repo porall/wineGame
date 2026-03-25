@@ -5,6 +5,9 @@ Page({
     deckName: '',
     deckDesc: '',
     selectedIcon: '✨',
+    selectedIconBg: '#FEF3C7',
+    cardInput: '',
+    cards: [],
     canCreate: false,
     iconList: [
       { icon: '✨', bg: '#FEF3C7' },
@@ -20,19 +23,17 @@ Page({
 
   /**
    * 监听卡组名称输入
-   * @param {Object} e - 事件对象
    */
   onNameInput(e) {
     const name = e.detail.value
     this.setData({
       deckName: name,
-      canCreate: name.trim().length > 0
+      canCreate: name.trim().length > 0 && this.data.cards.length > 0
     })
   },
 
   /**
    * 监听卡组描述输入
-   * @param {Object} e - 事件对象
    */
   onDescInput(e) {
     this.setData({
@@ -42,12 +43,50 @@ Page({
 
   /**
    * 选择图标
-   * @param {Object} e - 事件对象
    */
   selectIcon(e) {
     const icon = e.currentTarget.dataset.icon
+    const iconItem = this.data.iconList.find(i => i.icon === icon)
     this.setData({
-      selectedIcon: icon
+      selectedIcon: icon,
+      selectedIconBg: iconItem.bg
+    })
+  },
+
+  /**
+   * 监听卡牌输入
+   */
+  onCardInput(e) {
+    this.setData({ cardInput: e.detail.value })
+  },
+
+  /**
+   * 添加卡牌
+   */
+  addCard() {
+    const card = this.data.cardInput.trim()
+    if (!card) return
+    if (this.data.cards.length >= 100) {
+      wx.showToast({ title: '最多100张', icon: 'none' })
+      return
+    }
+    this.setData({
+      cards: [...this.data.cards, card],
+      cardInput: '',
+      canCreate: this.data.deckName.trim().length > 0 && this.data.cards.length > 0
+    })
+  },
+
+  /**
+   * 删除卡牌
+   */
+  deleteCard(e) {
+    const index = e.currentTarget.dataset.index
+    const cards = [...this.data.cards]
+    cards.splice(index, 1)
+    this.setData({
+      cards,
+      canCreate: this.data.deckName.trim().length > 0 && cards.length > 0
     })
   },
 
@@ -61,9 +100,9 @@ Page({
       id: Date.now().toString(),
       name: this.data.deckName.trim(),
       icon: this.data.selectedIcon,
-      iconBg: this.getIconBg(this.data.selectedIcon),
+      iconBg: this.data.selectedIconBg || '#FEF3C7',
       description: this.data.deckDesc,
-      cards: [],
+      cards: this.data.cards,
       createdAt: new Date().toISOString()
     }
 
@@ -75,15 +114,5 @@ Page({
     wx.redirectTo({
       url: `/pages/deck-detail/deck-detail?id=${newDeck.id}`
     })
-  },
-
-  /**
-   * 获取图标背景色
-   * @param {string} icon - 图标
-   * @returns {string} 背景色
-   */
-  getIconBg(icon) {
-    const iconItem = this.data.iconList.find(item => item.icon === icon)
-    return iconItem ? iconItem.bg : '#F1F5F9'
   }
 })

@@ -13,6 +13,24 @@ Page({
   onLoad() {
     this.setGreeting()
     this.loadDecks()
+    this.getUserProfile()
+  },
+
+  /**
+   * 获取用户头像（新版微信 API）
+   */
+  getUserProfile() {
+    wx.getUserProfile({
+      desc: '用于展示用户头像',
+      success: (res) => {
+        const userInfo = res.userInfo
+        app.globalData.userInfo = userInfo
+        this.setData({ userInfo })
+      },
+      fail: (err) => {
+        console.log('用户拒绝授权', err)
+      }
+    })
   },
 
   /**

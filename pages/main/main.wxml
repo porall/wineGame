@@ -14,13 +14,22 @@
   </view>
 
   <view class="deck-grid">
-    <view class="deck-item" wx:for="{{decks}}" wx:key="id" bindtap="goToDeckDetail" data-id="{{item.id}}">
-      <view class="deck-icon-wrapper" style="background-color: {{item.iconBg}};">
-        <text class="deck-icon">{{item.icon}}</text>
+    <block wx:if="{{decks.length === 0}}">
+      <view class="deck-empty">
+        <text class="deck-empty-icon">🎴</text>
+        <text class="deck-empty-text">还没有卡组</text>
+        <text class="deck-empty-hint">点击 + 创建你的第一个卡组</text>
       </view>
-      <text class="deck-name">{{item.name}}</text>
-      <text class="deck-count">{{item.cards.length}} 张卡牌</text>
-    </view>
+    </block>
+    <block wx:else>
+      <view class="deck-item" wx:for="{{decks}}" wx:key="id" bindtap="goToDeckDetail" data-id="{{item.id}}">
+        <view class="deck-icon-wrapper" style="background-color: {{item.iconBg}};">
+          <text class="deck-icon">{{item.icon}}</text>
+        </view>
+        <text class="deck-name">{{item.name}}</text>
+        <text class="deck-count">{{item.cards.length}} 张卡牌</text>
+      </view>
+    </block>
   </view>
 
   <view class="fab-button" bindtap="goToNewDeck">

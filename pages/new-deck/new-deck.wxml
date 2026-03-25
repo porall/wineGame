@@ -1,49 +1,74 @@
 <view class="container">
-  <view class="form-section">
-    <view class="form-item">
-      <text class="form-label">卡组名称</text>
-      <input 
-        class="form-input" 
-        placeholder="请输入卡组名称（必填）" 
-        value="{{deckName}}"
-        bindinput="onNameInput"
-      />
-    </view>
+  <!-- 名称 -->
+  <view class="form-item">
+    <view class="label">卡组名称 *</view>
+    <input 
+      class="input" 
+      placeholder="请输入名称" 
+      maxlength="20"
+      value="{{deckName}}"
+      bindinput="onNameInput"
+    />
+  </view>
 
-    <view class="form-item">
-      <text class="form-label">选择图标</text>
-      <view class="icon-picker">
-        <view 
-          class="icon-option {{selectedIcon === item.icon ? 'selected' : ''}}" 
-          wx:for="{{iconList}}" 
-          wx:key="icon"
-          bindtap="selectIcon"
-          data-icon="{{item.icon}}"
-          style="background-color: {{item.bg}};"
-        >
-          <text class="icon-emoji">{{item.icon}}</text>
-        </view>
-      </view>
-    </view>
+  <!-- 描述 -->
+  <view class="form-item">
+    <view class="label">描述</view>
+    <textarea 
+      class="textarea" 
+      placeholder="简单描述一下这个卡组"
+      maxlength="100"
+      value="{{deckDesc}}"
+      bindinput="onDescInput"
+    />
+  </view>
 
-    <view class="form-item">
-      <text class="form-label">卡组描述</text>
-      <textarea 
-        class="form-textarea" 
-        placeholder="选填，描述一下这个卡组的用途吧~" 
-        value="{{deckDesc}}"
-        bindinput="onDescInput"
-      />
+  <!-- 图标 -->
+  <view class="form-item">
+    <view class="label">选择图标</view>
+    <view class="icon-list">
+      <view 
+        wx:for="{{iconList}}" 
+        wx:key="icon"
+        class="icon-item {{selectedIcon === item.icon ? 'active' : ''}}"
+        style="background-color: {{item.bg}}"
+        bindtap="selectIcon"
+        data-icon="{{item.icon}}"
+      >{{item.icon}}</view>
     </view>
   </view>
 
+  <!-- 卡牌 -->
+  <view class="form-item">
+    <view class="label">卡牌内容 ({{cards.length}}/100)</view>
+    <view class="card-input-wrap">
+      <input 
+        class="card-input" 
+        placeholder="输入卡牌内容，按回车添加"
+        maxlength="50"
+        value="{{cardInput}}"
+        bindinput="onCardInput"
+        bindconfirm="addCard"
+      />
+      <view class="add-btn" bindtap="addCard">添加</view>
+    </view>
+    <view class="card-list">
+      <view 
+        wx:for="{{cards}}" 
+        wx:key="*this"
+        class="card-tag"
+      >
+        {{item}}
+        <text class="delete" bindtap="deleteCard" data-index="{{index}}">×</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 创建按钮 -->
   <view class="bottom-bar">
-    <button 
-      class="create-btn {{canCreate ? 'active' : 'disabled'}}" 
-      disabled="{{!canCreate}}"
+    <view 
+      class="create-btn {{canCreate ? 'active' : 'disabled'}}"
       bindtap="createDeck"
-    >
-      创建卡组
-    </button>
+    >创建卡组</view>
   </view>
 </view>

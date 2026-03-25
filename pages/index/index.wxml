@@ -1,61 +1,8 @@
 <view class="container">
-  <!-- 动态背景 -->
-  <view class="bg-shapes">
-    <view class="shape shape-1"></view>
-    <view class="shape shape-2"></view>
-    <view class="shape shape-3"></view>
-  </view>
-  
-  <!-- 标题区域 -->
-  <view class="header">
-    <view class="title-wrapper">
-      <text class="title">酒桌游戏</text>
-      <text class="title-accent">🎉</text>
-    </view>
-    <view class="subtitle">让聚会更有趣</view>
-  </view>
-  
-  <!-- 分类选择 -->
-  <view class="category-container">
-    <view 
-      class="category-item {{selectedCategory === 'statement' ? 'active' : ''}}"
-      bindtap="selectCategory"
-      data-category="statement"
-    >
-      <text class="category-icon">💬</text>
-      <text class="category-text">陈述类</text>
-    </view>
-    <view 
-      class="category-item {{selectedCategory === 'action' ? 'active' : ''}}"
-      bindtap="selectCategory"
-      data-category="action"
-    >
-      <text class="category-icon">🏃</text>
-      <text class="category-text">动作类</text>
-    </view>
-    <view 
-      class="category-item {{selectedCategory === 'interaction' ? 'active' : ''}}"
-      bindtap="selectCategory"
-      data-category="interaction"
-    >
-      <text class="category-icon">🤝</text>
-      <text class="category-text">互动类</text>
-    </view>
-    <view 
-      class="category-item {{selectedCategory === 'hell' ? 'active' : ''}}"
-      bindtap="selectCategory"
-      data-category="hell"
-    >
-      <text class="category-icon">🔥</text>
-      <text class="category-text">地狱难度</text>
-    </view>
-  </view>
-  
   <!-- 抽卡池 -->
   <view class="card-pool">
     <view class="card-wrapper">
       <view class="card {{isCardVisible ? 'visible' : ''}} {{isCardShaking ? 'shake' : ''}}">
-        <view class="card-pattern"></view>
         <view class="card-content">
           <text>{{currentCard || '点击下方按钮开始抽卡'}}</text>
         </view>
