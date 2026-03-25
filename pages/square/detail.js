@@ -1,66 +1,74 @@
-// pages/square/detail.js
+const app = getApp()
+const { cloudApi } = require('../../utils/cloud')
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    deckId: '',
+    deck: null,
+    loading: true,
+    isLiked: false,
+    isUsed: false
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad(options) {
-
+    if (options.id) {
+      this.setData({ deckId: options.id })
+      this.loadDetail()
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  async loadDetail() {
+    this.setData({ loading: true })
+    try {
+      const res = await cloudApi.getDeckDetail(this.data.deckId)
+      if (res.success) {
+        this.setData({
+          deck: res.data,
+          isLiked: res.data.isLiked || false
+        })
+      }
+    } catch (err) {
+      wx.showToast({ title: '加载失败', icon: 'none' })
+    } finally {
+      this.setData({ loading: false })
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
+  goBack() {
+    wx.navigateBack()
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  async toggleLike() {
+    try {
+      const res = await cloudApi.likeDeck(this.data.deckId)
+      if (res.success) {
+        this.setData({ isLiked: !this.data.isLiked })
+      }
+    } catch (err) {
+      wx.showToast({ title: '操作失败', icon: 'none' })
+    }
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
+  async useDeck() {
+    wx.showLoading({ title: '导入中...' })
+    try {
+      const res = await cloudApi.useDeck(this.data.deckId)
+      if (res.success) {
+        this.setData({ isUsed: true })
+        wx.showToast({ title: '已导入到卡组', icon: 'success' })
+      }
+    } catch (err) {
+      wx.showToast({ title: '导入失败', icon: 'none' })
+    } finally {
+      wx.hideLoading()
+    }
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
   onShareAppMessage() {
-
+    return {
+      title: this.data.deck.name,
+      path: `/pages/square/detail?id=${this.data.deckId}`,
+      imageUrl: '/images/logo.png'
+    }
   }
 })

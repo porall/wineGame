@@ -1,1 +1,161 @@
-/* pages/square/detail.wxss */
+page {
+  --primary: #ff6b6b;
+  --text: #111111;
+  --text-secondary: #555555;
+  --text-tertiary: #888888;
+  --bg: #ffffff;
+  --card-bg: #ffffff;
+  --border: #e0e0e0;
+  --border-light: #f5f5f5;
+}
+
+.container {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100rpx;
+  color: var(--text-tertiary);
+}
+
+/* 头部 */
+.header {
+  display: flex;
+  padding: 24rpx;
+}
+
+.back-button {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: var(--text-secondary);
+  background: var(--border-light);
+  border-radius: 50%;
+}
+
+/* 卡组信息 */
+.deck-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32rpx 24rpx;
+}
+
+.deck-icon-wrapper {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16rpx;
+}
+
+.deck-icon {
+  font-size: 56rpx;
+}
+
+.deck-name {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8rpx;
+}
+
+.deck-desc {
+  font-size: 24rpx;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin-bottom: 16rpx;
+}
+
+.deck-tags {
+  display: flex;
+  gap: 8rpx;
+}
+
+.tag {
+  padding: 6rpx 16rpx;
+  background: var(--border-light);
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: var(--text-secondary);
+}
+
+/* 操作按钮 */
+.actions {
+  display: flex;
+  gap: 16rpx;
+  padding: 0 24rpx 32rpx;
+  justify-content: center;
+}
+
+.action-btn {
+  padding: 16rpx 32rpx;
+  background: var(--border-light);
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: var(--text-secondary);
+}
+
+.action-btn.primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+.action-btn.active {
+  background: #ffe5e5;
+}
+
+.action-btn.disabled {
+  background: var(--border-light);
+  color: var(--text-tertiary);
+}
+
+/* 卡牌列表 */
+.cards-section {
+  padding: 24rpx;
+}
+
+.section-title {
+  font-size: 26rpx;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 16rpx;
+  display: block;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12rpx;
+}
+
+.card-item {
+  background: var(--card-bg);
+  padding: 20rpx;
+  border-radius: 8rpx;
+  border: 1rpx solid var(--border-light);
+}
+
+.card-item text {
+  font-size: 24rpx;
+  color: var(--text);
+}
+
+/* 空状态 */
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100rpx;
+  color: var(--text-tertiary);
+}

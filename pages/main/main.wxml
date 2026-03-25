@@ -5,7 +5,7 @@
       <text class="greeting-text">{{greeting}}</text>
     </view>
     <view class="avatar-wrapper">
-      <image class="avatar" src="{{userInfo.avatarUrl || '/images/logo.png'}}" mode="aspectFill"></image>
+      <open-data type="userAvatarUrl" class="avatar"></open-data>
     </view>
   </view>
 

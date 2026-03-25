@@ -18,17 +18,14 @@ Page({
 
   /**
    * 获取用户头像（新版微信 API）
+   * 注意：getUserProfile 已废弃，改为使用 open-data 展示头像
    */
   getUserProfile() {
-    wx.getUserProfile({
-      desc: '用于展示用户头像',
-      success: (res) => {
-        const userInfo = res.userInfo
-        app.globalData.userInfo = userInfo
-        this.setData({ userInfo })
-      },
-      fail: (err) => {
-        console.log('用户拒绝授权', err)
+    // 新版方案：使用 open-data 展示头像，不需要授权
+    // 如果需要用户信息，使用 wx.login 获取 code
+    this.setData({
+      userInfo: {
+        avatarUrl: ''
       }
     })
   },
