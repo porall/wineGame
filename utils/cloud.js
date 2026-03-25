@@ -3,71 +3,68 @@
  */
 const cloud = wx.cloud
 
-export const cloudApi = {
+const cloudApi = {
   /**
    * 获取广场卡组列表
-   * @param {Object} data - { page, limit, tag, keyword }
    */
-  getSquareList: (data = {}) => {
+  getSquareList: function(data = {}) {
     return cloud.callFunction({
       name: 'getSquareList',
-      data
+      data: data
     })
   },
 
   /**
    * 获取卡组详情
-   * @param {string} deckId - 卡组ID
    */
-  getDeckDetail: (deckId) => {
+  getDeckDetail: function(deckId) {
     return cloud.callFunction({
       name: 'getDeckDetail',
-      data: { deckId }
+      data: { deckId: deckId }
     })
   },
 
   /**
    * 发布卡组
-   * @param {Object} data - 卡组数据
    */
-  publishDeck: (data) => {
+  publishDeck: function(data) {
     return cloud.callFunction({
       name: 'publishDeck',
-      data
+      data: data
     })
   },
 
   /**
    * 收藏/取消收藏
-   * @param {string} deckId - 卡组ID
    */
-  likeDeck: (deckId) => {
+  likeDeck: function(deckId) {
     return cloud.callFunction({
       name: 'likeDeck',
-      data: { deckId }
+      data: { deckId: deckId }
     })
   },
 
   /**
    * 使用卡组（导入到本地）
-   * @param {string} deckId - 卡组ID
    */
-  useDeck: (deckId) => {
+  useDeck: function(deckId) {
     return cloud.callFunction({
       name: 'useDeck',
-      data: { deckId }
+      data: { deckId: deckId }
     })
   },
 
   /**
    * 添加评论
-   * @param {string} deckId - 卡组ID
-   * @param {string} content - 评论内容
    */
-  addComment: (deckId, content) => {
+  addComment: function(deckId, content) {
     return cloud.callFunction({
       name: 'addComment',
-      data: { deckId, content }
+      data: { deckId: deckId, content: content }
     })
   }
+}
+
+module.exports = {
+  cloudApi: cloudApi
 }
