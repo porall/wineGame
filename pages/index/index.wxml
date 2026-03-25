@@ -1,4 +1,46 @@
 <view class="container">
+  <!-- 标题区域 -->
+  <view class="header">
+    <text class="title">酒桌游戏</text>
+    <text class="subtitle">让聚会更有趣</text>
+  </view>
+  
+  <!-- 分类选择 -->
+  <view class="category-container">
+    <view 
+      class="category-item {{selectedCategory === 'statement' ? 'active' : ''}}"
+      bindtap="selectCategory"
+      data-category="statement"
+    >
+      <text class="category-icon">💬</text>
+      <text class="category-text">陈述</text>
+    </view>
+    <view 
+      class="category-item {{selectedCategory === 'action' ? 'active' : ''}}"
+      bindtap="selectCategory"
+      data-category="action"
+    >
+      <text class="category-icon">🏃</text>
+      <text class="category-text">动作</text>
+    </view>
+    <view 
+      class="category-item {{selectedCategory === 'interaction' ? 'active' : ''}}"
+      bindtap="selectCategory"
+      data-category="interaction"
+    >
+      <text class="category-icon">🤝</text>
+      <text class="category-text">互动</text>
+    </view>
+    <view 
+      class="category-item {{selectedCategory === 'hell' ? 'active' : ''}}"
+      bindtap="selectCategory"
+      data-category="hell"
+    >
+      <text class="category-icon">🔥</text>
+      <text class="category-text">地狱</text>
+    </view>
+  </view>
+  
   <!-- 抽卡池 -->
   <view class="card-pool">
     <view class="card-wrapper">
@@ -20,6 +62,6 @@
   
   <!-- 底部信息 -->
   <view class="footer">
-    <text class="footer-text">© 2026 酒桌游戏 · 聚会必备神器</text>
+    <text class="footer-text">© 2026 酒桌游戏</text>
   </view>
 </view>
