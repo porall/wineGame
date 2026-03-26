@@ -1,38 +1,51 @@
+<!-- 聚会狂欢主题 - 炫酷动画版本 -->
 <view class="container">
-  <!-- 标题区域 -->
+  <!-- Canvas 背景粒子效果 -->
+  <canvas type="2d" id="partyCanvas" class="party-canvas"></canvas>
+  
+  <!-- 标题区域 - 带发光效果 -->
   <view class="header">
-    <text class="title">酒桌游戏</text>
-    <text class="subtitle">让聚会更有趣</text>
+    <view class="title-wrapper">
+      <text class="title glow-text">🎉 酒桌派对 🎉</text>
+    </view>
+    <text class="subtitle pulse">让聚会嗨起来！</text>
   </view>
   
-  <!-- 分类选择 -->
+  <!-- 状态栏：已启用卡组数量 -->
+  <view class="status-bar" bindtap="openDeckPanel">
+    <text class="status-icon">📚</text>
+    <text class="status-text">已启用 {{enabledCount.official}} 个官方卡组 + {{enabledCount.custom}} 个自定义卡组</text>
+    <text class="status-arrow">›</text>
+  </view>
+  
+  <!-- 分类选择 - 霓虹风格 -->
   <view class="category-container">
     <view 
-      class="category-item {{selectedCategory === 'statement' ? 'active' : ''}}"
+      class="category-item neon {{selectedCategory === 'statement' ? 'active' : ''}}"
       bindtap="selectCategory"
       data-category="statement"
     >
       <text class="category-icon">💬</text>
-      <text class="category-text">陈述</text>
+      <text class="category-text">真心话</text>
     </view>
     <view 
-      class="category-item {{selectedCategory === 'action' ? 'active' : ''}}"
+      class="category-item neon {{selectedCategory === 'action' ? 'active' : ''}}"
       bindtap="selectCategory"
       data-category="action"
     >
-      <text class="category-icon">🏃</text>
-      <text class="category-text">动作</text>
+      <text class="category-icon">🎯</text>
+      <text class="category-text">大冒险</text>
     </view>
     <view 
-      class="category-item {{selectedCategory === 'interaction' ? 'active' : ''}}"
+      class="category-item neon {{selectedCategory === 'interaction' ? 'active' : ''}}"
       bindtap="selectCategory"
       data-category="interaction"
     >
-      <text class="category-icon">🤝</text>
+      <text class="category-icon">🎭</text>
       <text class="category-text">互动</text>
     </view>
     <view 
-      class="category-item {{selectedCategory === 'hell' ? 'active' : ''}}"
+      class="category-item neon {{selectedCategory === 'hell' ? 'active' : ''}}"
       bindtap="selectCategory"
       data-category="hell"
     >
@@ -41,27 +54,117 @@
     </view>
   </view>
   
-  <!-- 抽卡池 -->
+  <!-- 抽卡池 - 3D卡片效果 -->
   <view class="card-pool">
-    <view class="card-wrapper">
-      <view class="card {{isCardVisible ? 'visible' : ''}} {{isCardShaking ? 'shake' : ''}}">
-        <view class="card-content">
-          <text>{{currentCard || '点击下方按钮开始抽卡'}}</text>
+    <view class="card-3d-container">
+      <view class="card-3d {{isCardVisible ? 'show' : ''}} {{isCardShaking ? 'shake' : ''}}">
+        <view class="card-inner">
+          <view class="card-front">
+            <text class="card-emoji">🎴</text>
+          </view>
+          <view class="card-back">
+            <text class="card-text">{{currentCard || '准备好接受挑战了吗？'}}</text>
+            <text class="card-source" wx:if="{{cardSource}}">来自：{{cardSource}}</text>
+          </view>
         </view>
       </view>
     </view>
   </view>
   
-  <!-- 抽卡按钮 -->
-  <view class="draw-button" bindtap="drawCard">
-    <view class="button-inner">
-      <text class="button-text">抽卡</text>
-      <text class="button-hint">TAP ME</text>
+  <!-- 抽卡按钮 - 彩虹渐变 -->
+  <view class="draw-button-wrapper" bindtap="drawCard">
+    <view class="rainbow-button">
+      <view class="button-shine"></view>
+      <view class="button-content">
+        <text class="button-emoji">🎲</text>
+        <text class="button-text">开始抽卡</text>
+      </view>
     </view>
   </view>
   
-  <!-- 底部信息 -->
+  <!-- 底部装饰 -->
   <view class="footer">
-    <text class="footer-text">© 2026 酒桌游戏</text>
+    <view class="footer-confetti"></view>
+    <text class="footer-text">✨ 聚会必备 ✨</text>
+  </view>
+  
+  <!-- 卡组管理面板 -->
+  <view class="deck-panel-mask {{isDeckPanelVisible ? 'show' : ''}}" bindtap="closeDeckPanel"></view>
+  <view class="deck-panel {{isDeckPanelVisible ? 'show' : ''}}">
+    <view class="panel-header">
+      <text class="panel-title">卡组管理</text>
+      <text class="panel-close" bindtap="closeDeckPanel">✕</text>
+    </view>
+    
+    <!-- Tab 切换 -->
+    <view class="panel-tabs">
+      <view 
+        class="panel-tab {{deckPanelTab === 'official' ? 'active' : ''}}"
+        bindtap="switchDeckTab"
+        data-tab="official"
+      >官方卡组</view>
+      <view 
+        class="panel-tab {{deckPanelTab === 'custom' ? 'active' : ''}}"
+        bindtap="switchDeckTab"
+        data-tab="custom"
+      >我的卡组</view>
+    </view>
+    
+    <!-- 官方卡组内容 -->
+    <view class="panel-content" wx:if="{{deckPanelTab === 'official'}}">
+      <view class="deck-list">
+        <view class="deck-item" wx:for="{{[{
+          key: 'statement', name: '真心话', icon: '💬', count: cards.statement.length
+        }, {key: 'action', name: '大冒险', icon: '🎯', count: cards.action.length}, {key: 'interaction', name: '互动', icon: '🎭', count: cards.interaction.length}, {key: 'hell', name: '地狱', icon: '🔥', count: cards.hell.length}]}}" wx:key="key">
+          <view class="deck-info">
+            <text class="deck-icon">{{item.icon}}</text>
+            <view class="deck-meta">
+              <text class="deck-name">{{item.name}}</text>
+              <text class="deck-count">{{item.count}} 张卡牌</text>
+            </view>
+          </view>
+          <switch 
+            class="deck-switch" 
+            checked="{{deckConfig.official[item.key]}}"
+            bindchange="toggleOfficial"
+            data-category="{{item.key}}"
+            color="#ff6b9d"
+          />
+        </view>
+      </view>
+    </view>
+    
+    <!-- 自定义卡组内容 -->
+    <view class="panel-content" wx:if="{{deckPanelTab === 'custom'}}">
+      <view class="deck-list" wx:if="{{deckConfig.custom.length > 0}}">
+        <view class="deck-item" wx:for="{{deckConfig.custom}}" wx:key="id">
+          <view class="deck-info">
+            <text class="deck-icon">📋</text>
+            <view class="deck-meta">
+              <text class="deck-name">{{item.name}}</text>
+              <text class="deck-count">{{item.cards.length}} 张卡牌</text>
+            </view>
+          </view>
+          <view class="deck-actions">
+            <switch 
+              class="deck-switch" 
+              checked="{{item.enabled}}"
+              bindchange="toggleCustom"
+              data-index="{{index}}"
+              color="#ff6b9d"
+            />
+            <text class="deck-edit" bindtap="editCustomDeck" data-index="{{index}}">编辑</text>
+            <text class="deck-delete" bindtap="deleteCustomDeck" data-index="{{index}}">删除</text>
+          </view>
+        </view>
+      </view>
+      <view class="empty-tip" wx:else>
+        <text>暂无自定义卡组</text>
+      </view>
+      <view class="add-deck-btn" bindtap="goToNewDeck">
+        <text class="add-icon">+</text>
+        <text>新建卡组</text>
+      </view>
+    </view>
   </view>
 </view>
