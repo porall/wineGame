@@ -143,14 +143,12 @@ page {
   box-shadow: 0 0 30rpx rgba(46, 213, 115, 0.5), 0 8rpx 24rpx rgba(0, 0, 0, 0.3);
 }
 
-.category-item.neon.enabled .category-status {
-  color: #2ed573;
-}
-
-.category-status {
-  font-size: 20rpx;
-  color: rgba(255, 255, 255, 0.4);
-  margin-top: 8rpx;
+/* 选中状态 */
+.category-item.neon.selected {
+  transform: scale(1.05);
+  border-color: #ff6b9d;
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.3) 0%, rgba(255, 107, 157, 0.2) 100%);
+  box-shadow: 0 0 40rpx rgba(255, 107, 157, 0.6), 0 12rpx 32rpx rgba(0, 0, 0, 0.4);
 }
 
 .category-item.neon:active {

@@ -3,10 +3,7 @@
     "pages/index/index",
     "pages/main/main",
     "pages/new-deck/new-deck",
-    "pages/deck-detail/deck-detail",
-    "pages/square/index",
-    "pages/square/detail",
-    "pages/square/publish"
+    "pages/deck-detail/deck-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,12 +28,6 @@
         "text": "卡组",
         "iconPath": "images/user.png",
         "selectedIconPath": "images/user-active.png"
-      },
-      {
-        "pagePath": "pages/square/index",
-        "text": "广场",
-        "iconPath": "images/square.png",
-        "selectedIconPath": "images/square-active.png"
       }
     ]
   },

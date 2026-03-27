@@ -21,42 +21,60 @@
   <!-- 分类选择 - 霓虹风格 -->
   <view class="category-container">
     <view 
-      class="category-item neon {{deckConfig.official.statement ? 'enabled' : ''}}"
+      wx:if="{{deckConfig.official.statement}}"
+      class="category-item neon enabled {{selectedCategory === 'statement' ? 'selected' : ''}}"
       bindtap="selectCategory"
       data-category="statement"
     >
       <text class="category-icon">💬</text>
       <text class="category-text">真心话</text>
-      <text class="category-status">{{deckConfig.official.statement ? '已启用' : '未启用'}}</text>
     </view>
     <view 
-      class="category-item neon {{deckConfig.official.action ? 'enabled' : ''}}"
+      wx:if="{{deckConfig.official.action}}"
+      class="category-item neon enabled {{selectedCategory === 'action' ? 'selected' : ''}}"
       bindtap="selectCategory"
       data-category="action"
     >
       <text class="category-icon">🎯</text>
       <text class="category-text">大冒险</text>
-      <text class="category-status">{{deckConfig.official.action ? '已启用' : '未启用'}}</text>
     </view>
     <view 
-      class="category-item neon {{deckConfig.official.interaction ? 'enabled' : ''}}"
+      wx:if="{{deckConfig.official.interaction}}"
+      class="category-item neon enabled {{selectedCategory === 'interaction' ? 'selected' : ''}}"
       bindtap="selectCategory"
       data-category="interaction"
     >
       <text class="category-icon">🎭</text>
       <text class="category-text">互动</text>
-      <text class="category-status">{{deckConfig.official.interaction ? '已启用' : '未启用'}}</text>
     </view>
     <view 
-      class="category-item neon {{deckConfig.official.hell ? 'enabled' : ''}}"
+      wx:if="{{deckConfig.official.hell}}"
+      class="category-item neon enabled {{selectedCategory === 'hell' ? 'selected' : ''}}"
       bindtap="selectCategory"
       data-category="hell"
     >
       <text class="category-icon">🔥</text>
       <text class="category-text">地狱</text>
-      <text class="category-status">{{deckConfig.official.hell ? '已启用' : '未启用'}}</text>
     </view>
+    <!-- 自定义卡组 -->
+    <block wx:for="{{deckConfig.custom}}" wx:key="id">
+      <view 
+        wx:if="{{item.enabled}}"
+        class="category-item neon enabled {{selectedCategory === item.id ? 'selected' : ''}}"
+        bindtap="selectCategory"
+        data-category="{{item.id}}"
+      >
+        <text class="category-icon">📋</text>
+        <text class="category-text">{{item.name}}</text>
+      </view>
+    </block>
   </view>
+  
+  <!-- 未启用提示 -->
+  <view class="empty-tip" wx:if="{{enabledCount.official === 0 && enabledCount.custom === 0}}">
+    <text>请先启用卡组后开始游戏</text>
+  </view>
+  
   
   <!-- 抽卡池 - 卡片效果 -->
   <view class="card-pool">

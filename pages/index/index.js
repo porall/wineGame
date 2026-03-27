@@ -141,7 +141,7 @@ const DEFAULT_DECK_CONFIG = {
 
 Page({
   data: {
-    selectedCategory: 'statement',
+    selectedCategory: '',
     currentCard: '',
     cardSource: '', // 当前抽到的卡牌来源
     isCardVisible: false,
@@ -458,12 +458,10 @@ Page({
 
   selectCategory(e) {
     const category = e.currentTarget.dataset.category;
-    // 切换当前分类的启用状态
-    const config = this.data.deckConfig;
-    config.official[category] = !config.official[category];
-    this.saveDeckConfig(config);
-    
+    // 如果点击的是当前已选中的分类，则取消选中；否则选中该分类
+    const newCategory = this.data.selectedCategory === category ? '' : category;
     this.setData({
+      selectedCategory: newCategory,
       isCardVisible: false,
       currentCard: '',
       cardSource: ''
@@ -475,12 +473,38 @@ Page({
       return;
     }
 
-    // 获取所有启用的卡牌
-    const allCards = this.getAllEnabledCards();
+    let cards = [];
     
-    if (allCards.length === 0) {
+    // 如果选中了某个分类，只从这个分类抽
+    if (this.data.selectedCategory) {
+      const config = this.data.deckConfig;
+      const category = this.data.selectedCategory;
+      
+      // 判断是官方还是自定义
+      if (config.official[category]) {
+        // 官方卡组
+        if (CARD_DATA[category]) {
+          CARD_DATA[category].forEach(card => {
+            cards.push({ source: 'official', category: category, content: card });
+          });
+        }
+      } else {
+        // 自定义卡组
+        const customDeck = config.custom.find(d => d.id === category && d.enabled);
+        if (customDeck && customDeck.cards) {
+          customDeck.cards.forEach(card => {
+            cards.push({ source: 'custom', deckName: customDeck.name, content: card });
+          });
+        }
+      }
+    } else {
+      // 没有选中分类，从所有启用的卡组中抽
+      cards = this.getAllEnabledCards();
+    }
+    
+    if (cards.length === 0) {
       wx.showToast({
-        title: '请先启用卡组',
+        title: '该卡组暂无卡牌',
         icon: 'none'
       });
       return;
@@ -492,9 +516,9 @@ Page({
     });
 
     setTimeout(() => {
-      // 从所有启用的卡牌中随机抽取
-      const randomIndex = Math.floor(Math.random() * allCards.length);
-      const randomCard = allCards[randomIndex];
+      // 从当前卡牌池中随机抽取
+      const randomIndex = Math.floor(Math.random() * cards.length);
+      const randomCard = cards[randomIndex];
       
       // 生成来源描述
       let sourceDesc = '';
