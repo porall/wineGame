@@ -35,8 +35,8 @@ Page({
    * 加载卡组数据
    */
   loadDeck() {
-    const decks = app.globalData.decks || []
-    const deck = decks.find(d => d.id === this.data.deckId)
+    const config = wx.getStorageSync('deckConfig') || { custom: [] }
+    const deck = config.custom.find(d => d.id === this.data.deckId)
     if (deck) {
       this.setData({ deck })
     }
@@ -90,15 +90,14 @@ Page({
     if (!this.data.canConfirm) return
 
     const content = this.data.cardContent.trim()
-    let decks = app.globalData.decks || []
-    const deckIndex = decks.findIndex(d => d.id === this.data.deckId)
+    const config = wx.getStorageSync('deckConfig') || { custom: [] }
+    const deckIndex = config.custom.findIndex(d => d.id === this.data.deckId)
     
     if (deckIndex !== -1) {
-      decks[deckIndex].cards.push(content)
-      // 使用 App 的方法保存数据
-      app.updateDecks(decks)
+      config.custom[deckIndex].cards.push(content)
+      wx.setStorageSync('deckConfig', config)
       this.setData({
-        deck: decks[deckIndex],
+        deck: config.custom[deckIndex],
         showModal: false,
         cardContent: '',
         canConfirm: false
