@@ -56,6 +56,97 @@
       <text class="category-icon">🔥</text>
       <text class="category-text">地狱</text>
     </view>
+    <!-- 主题卡组（家庭聚会、同学聚会等） -->
+    <view 
+      wx:if="{{deckConfig.official.system_1}}"
+      class="category-item neon enabled {{selectedCategory === 'system_1' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_1"
+    >
+      <text class="category-icon">🏠</text>
+      <text class="category-text">家庭聚会</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_2}}"
+      class="category-item neon enabled {{selectedCategory === 'system_2' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_2"
+    >
+      <text class="category-icon">🎓</text>
+      <text class="category-text">同学聚会</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_3}}"
+      class="category-item neon enabled {{selectedCategory === 'system_3' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_3"
+    >
+      <text class="category-icon">⛺</text>
+      <text class="category-text">户外露营</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_4}}"
+      class="category-item neon enabled {{selectedCategory === 'system_4' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_4"
+    >
+      <text class="category-icon">💕</text>
+      <text class="category-text">情侣约会</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_5}}"
+      class="category-item neon enabled {{selectedCategory === 'system_5' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_5"
+    >
+      <text class="category-icon">💼</text>
+      <text class="category-text">同事团建</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_6}}"
+      class="category-item neon enabled {{selectedCategory === 'system_6' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_6"
+    >
+      <text class="category-icon">🍻</text>
+      <text class="category-text">朋友小聚</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_7}}"
+      class="category-item neon enabled {{selectedCategory === 'system_7' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_7"
+    >
+      <text class="category-icon">🎂</text>
+      <text class="category-text">生日派对</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_8}}"
+      class="category-item neon enabled {{selectedCategory === 'system_8' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_8"
+    >
+      <text class="category-icon">😂</text>
+      <text class="category-text">沙雕整蛊</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_9}}"
+      class="category-item neon enabled {{selectedCategory === 'system_9' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_9"
+    >
+      <text class="category-icon">🌙</text>
+      <text class="category-text">深夜畅聊</text>
+    </view>
+    <view 
+      wx:if="{{deckConfig.official.system_10}}"
+      class="category-item neon enabled {{selectedCategory === 'system_10' ? 'selected' : ''}}"
+      bindtap="selectCategory"
+      data-category="system_10"
+    >
+      <text class="category-icon">🎤</text>
+      <text class="category-text">经典老歌</text>
+    </view>
     <!-- 自定义卡组 -->
     <block wx:for="{{deckConfig.custom}}" wx:key="id">
       <view 
@@ -128,9 +219,22 @@
     <!-- 官方卡组内容 -->
     <view class="panel-content" wx:if="{{deckPanelTab === 'official'}}">
       <view class="deck-list">
-        <view class="deck-item" wx:for="{{[{
-          key: 'statement', name: '真心话', icon: '💬', count: cards.statement.length
-        }, {key: 'action', name: '大冒险', icon: '🎯', count: cards.action.length}, {key: 'interaction', name: '互动', icon: '🎭', count: cards.interaction.length}, {key: 'hell', name: '地狱', icon: '🔥', count: cards.hell.length}]}}" wx:key="key">
+        <view class="deck-item" wx:for="{{[
+          { key: 'statement', name: '真心话', icon: '💬', count: cards.statement.length },
+          { key: 'action', name: '大冒险', icon: '🎯', count: cards.action.length },
+          { key: 'interaction', name: '互动', icon: '🎭', count: cards.interaction.length },
+          { key: 'hell', name: '地狱', icon: '🔥', count: cards.hell.length },
+          { key: 'system_1', name: '家庭聚会', icon: '🏠', count: cards.system_1 ? cards.system_1.length : 0 },
+          { key: 'system_2', name: '同学聚会', icon: '🎓', count: cards.system_2 ? cards.system_2.length : 0 },
+          { key: 'system_3', name: '户外露营', icon: '⛺', count: cards.system_3 ? cards.system_3.length : 0 },
+          { key: 'system_4', name: '情侣约会', icon: '💕', count: cards.system_4 ? cards.system_4.length : 0 },
+          { key: 'system_5', name: '同事团建', icon: '💼', count: cards.system_5 ? cards.system_5.length : 0 },
+          { key: 'system_6', name: '朋友小聚', icon: '🍻', count: cards.system_6 ? cards.system_6.length : 0 },
+          { key: 'system_7', name: '生日派对', icon: '🎂', count: cards.system_7 ? cards.system_7.length : 0 },
+          { key: 'system_8', name: '沙雕整蛊', icon: '😂', count: cards.system_8 ? cards.system_8.length : 0 },
+          { key: 'system_9', name: '深夜畅聊', icon: '🌙', count: cards.system_9 ? cards.system_9.length : 0 },
+          { key: 'system_10', name: '经典老歌', icon: '🎤', count: cards.system_10 ? cards.system_10.length : 0 }
+        ]}}" wx:key="key">
           <view class="deck-info">
             <text class="deck-icon">{{item.icon}}</text>
             <view class="deck-meta">

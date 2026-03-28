@@ -1,4 +1,30 @@
-// 卡牌数据
+// 引入系统预设卡组
+const systemDecks = require('../../utils/systemDecks.js');
+
+// 官方卡组分类信息（包含原有的4个 + 新的10个主题卡组）
+const OFFICIAL_CATEGORIES = [
+  // 原有4个基础分类
+  { key: 'statement', name: '真心话', icon: '💬', color: '#ff6b9d' },
+  { key: 'action', name: '大冒险', icon: '🎯', color: '#ffa502' },
+  { key: 'interaction', name: '互动', icon: '🎭', color: '#2ed573' },
+  { key: 'hell', name: '地狱', icon: '🔥', color: '#ff4757' },
+  // 新的10个主题卡组
+  ...systemDecks.map(deck => ({
+    key: deck.id,
+    name: deck.name,
+    icon: deck.icon,
+    color: deck.iconBg,
+    isTheme: true
+  }))
+];
+
+// 将 systemDecks 转换为 CARD_DATA 格式
+const SYSTEM_DECKS_DATA = {};
+systemDecks.forEach(deck => {
+  SYSTEM_DECKS_DATA[deck.id] = deck.cards;
+});
+
+// 合并卡牌数据
 const CARD_DATA = {
   statement: [
     "讲一个你最尴尬的事",
@@ -117,24 +143,30 @@ const CARD_DATA = {
     "录一段鬼畜视频发朋友圈",
     "秀出你的肚腩或腹肌",
     "对通讯录第3位说\"我想你\""
-  ]
+  ],
+  // 添加主题卡组数据
+  ...SYSTEM_DECKS_DATA
 };
 
-// 官方卡组分类信息
-const OFFICIAL_CATEGORIES = [
-  { key: 'statement', name: '真心话', icon: '💬', color: '#ff6b9d' },
-  { key: 'action', name: '大冒险', icon: '🎯', color: '#ffa502' },
-  { key: 'interaction', name: '互动', icon: '🎭', color: '#2ed573' },
-  { key: 'hell', name: '地狱', icon: '🔥', color: '#ff4757' }
-];
-
-// 默认卡组配置
+// 默认卡组配置（初始只启用4个基础分类，其他主题卡组默认关闭）
 const DEFAULT_DECK_CONFIG = {
   official: {
+    // 原有4个基础分类（默认开启）
     statement: true,
     action: true,
     interaction: true,
-    hell: true
+    hell: true,
+    // 新的10个主题卡组（默认关闭，用户可手动开启）
+    system_1: false,   // 家庭聚会
+    system_2: false,   // 同学聚会
+    system_3: false,   // 户外露营
+    system_4: false,   // 情侣约会
+    system_5: false,   // 同事团建
+    system_6: false,   // 朋友小聚
+    system_7: false,   // 生日派对
+    system_8: false,   // 沙雕整蛊
+    system_9: false,   // 深夜畅聊
+    system_10: false   // 经典老歌
   },
   custom: []
 };
@@ -200,9 +232,16 @@ Page({
 
   // 加载卡组配置
   loadDeckConfig() {
-    const config = wx.getStorageSync('deckConfig');
-    if (config) {
-      this.setData({ deckConfig: config });
+    const savedConfig = wx.getStorageSync('deckConfig');
+    if (savedConfig) {
+      // 合并默认配置和已保存的配置，确保新卡组也被包含
+      const mergedConfig = {
+        official: { ...DEFAULT_DECK_CONFIG.official, ...savedConfig.official },
+        custom: savedConfig.custom || []
+      };
+      this.setData({ deckConfig: mergedConfig });
+      // 同时更新 storage
+      wx.setStorageSync('deckConfig', mergedConfig);
     } else {
       // 初始化默认配置
       this.saveDeckConfig(DEFAULT_DECK_CONFIG);

@@ -1,8 +1,14 @@
+<!-- 新建卡组页面 - 与首页统一风格 -->
 <view class="container">
   <!-- 标题 -->
   <view class="header">
-    <text class="title">{{isEdit ? '编辑卡组' : '新建卡组'}}</text>
-    <text class="subtitle">创建你的专属卡组</text>
+    <view class="header-center">
+      <text class="title">{{isEdit ? '编辑卡组' : '新建卡组'}}</text>
+      <text class="subtitle">创建你的专属卡组</text>
+    </view>
+    <view class="back-btn" bindtap="goBack">
+      <text class="back-icon">‹</text>
+    </view>
   </view>
 
   <!-- 卡组名称 -->
@@ -23,6 +29,7 @@
     <view class="source-btn" bindtap="openSourcePicker">
       <text class="source-icon">📥</text>
       <text class="source-text">{{cards.length > 0 ? '已选择 ' + cards.length + ' 张卡牌，点击重新选择' : '从官方卡组复制'}}</text>
+      <text class="source-arrow">›</text>
     </view>
   </view>
 
@@ -48,7 +55,7 @@
         wx:key="index"
         class="card-tag"
       >
-        {{item}}
+        <text class="card-text">{{item}}</text>
         <text class="delete" catchtap="deleteCard" data-index="{{index}}">×</text>
       </view>
     </view>
@@ -72,7 +79,7 @@
       <text class="picker-title">选择卡组来源</text>
       <text class="picker-close" bindtap="closeSourcePicker">✕</text>
     </view>
-    <view class="picker-content">
+    <scroll-view class="picker-content" scroll-y>
       <view 
         class="picker-option"
         wx:for="{{sourceOptions}}"
@@ -86,6 +93,6 @@
           <text class="option-desc">{{item.desc}}</text>
         </view>
       </view>
-    </view>
+    </scroll-view>
   </view>
 </view>

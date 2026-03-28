@@ -1,5 +1,8 @@
 const app = getApp()
 
+// 引入系统预设卡组
+const systemDecks = require('../../utils/systemDecks.js');
+
 // 官方卡牌数据（用于复制）
 const OFFICIAL_CARDS = {
   statement: [
@@ -92,6 +95,27 @@ const OFFICIAL_CARDS = {
   ]
 };
 
+// 构建卡组选项（包括4个基础卡组 + 10个主题卡组）
+const buildSourceOptions = () => {
+  const options = [
+    { key: 'empty', name: '空白卡组', desc: '从零开始添加卡牌' },
+    { key: 'statement', name: '真心话', icon: '💬', desc: `${OFFICIAL_CARDS.statement.length} 张卡牌` },
+    { key: 'action', name: '大冒险', icon: '🎯', desc: `${OFFICIAL_CARDS.action.length} 张卡牌` },
+    { key: 'interaction', name: '互动', icon: '🎭', desc: `${OFFICIAL_CARDS.interaction.length} 张卡牌` },
+    { key: 'hell', name: '地狱', icon: '🔥', desc: `${OFFICIAL_CARDS.hell.length} 张卡牌` }
+  ];
+  // 添加10个主题卡组
+  systemDecks.forEach(deck => {
+    options.push({
+      key: deck.id,
+      name: deck.name,
+      icon: deck.icon,
+      desc: `${deck.cards.length} 张卡牌`
+    });
+  });
+  return options;
+};
+
 Page({
   data: {
     isEdit: false,
@@ -102,13 +126,7 @@ Page({
     canSave: false,
     // 选择来源相关
     showSourcePicker: false,
-    sourceOptions: [
-      { key: 'empty', name: '空白卡组', desc: '从零开始添加卡牌' },
-      { key: 'statement', name: '真心话', icon: '💬', desc: `${OFFICIAL_CARDS.statement.length} 张卡牌` },
-      { key: 'action', name: '大冒险', icon: '🎯', desc: `${OFFICIAL_CARDS.action.length} 张卡牌` },
-      { key: 'interaction', name: '互动', icon: '🎭', desc: `${OFFICIAL_CARDS.interaction.length} 张卡牌` },
-      { key: 'hell', name: '地狱', icon: '🔥', desc: `${OFFICIAL_CARDS.hell.length} 张卡牌` }
-    ]
+    sourceOptions: buildSourceOptions()
   },
 
   onLoad(options) {
@@ -128,6 +146,10 @@ Page({
         wx.showToast({ title: '数据加载失败', icon: 'none' });
       }
     }
+  },
+
+  goBack() {
+    wx.navigateBack();
   },
 
   /**
@@ -182,19 +204,7 @@ Page({
    * 打开来源选择器
    */
   openSourcePicker() {
-    if (this.data.cards.length > 0) {
-      wx.showModal({
-        title: '切换来源',
-        content: '切换来源将清空当前已添加的卡牌，确定要继续吗？',
-        success: (res) => {
-          if (res.confirm) {
-            this.setData({ showSourcePicker: true, cards: [] });
-          }
-        }
-      });
-    } else {
-      this.setData({ showSourcePicker: true });
-    }
+    this.setData({ showSourcePicker: true });
   },
 
   /**
@@ -218,15 +228,28 @@ Page({
       return;
     }
     
-    // 从官方卡组复制
-    const sourceCards = OFFICIAL_CARDS[key];
-    if (sourceCards) {
+    // 从官方卡组复制（4个基础分类）
+    if (OFFICIAL_CARDS[key]) {
       this.setData({
         showSourcePicker: false,
-        cards: [...sourceCards]
+        cards: [...OFFICIAL_CARDS[key]]
       });
       wx.showToast({
-        title: `已复制 ${sourceCards.length} 张卡牌`,
+        title: `已复制 ${OFFICIAL_CARDS[key].length} 张卡牌`,
+        icon: 'success'
+      });
+      return;
+    }
+    
+    // 从主题卡组导入（追加到现有卡牌后面）
+    const sourceDeck = systemDecks.find(d => d.id === key);
+    if (sourceDeck) {
+      this.setData({
+        showSourcePicker: false,
+        cards: [...this.data.cards, ...sourceDeck.cards]
+      });
+      wx.showToast({
+        title: `已导入 ${sourceDeck.cards.length} 张卡牌`,
         icon: 'success'
       });
     }

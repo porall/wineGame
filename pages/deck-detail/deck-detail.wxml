@@ -55,7 +55,6 @@
         maxlength="20"
         value="{{cardContent}}"
         bindinput="onCardInput"
-        auto-height
       />
       <text class="char-counter">{{cardContent.length}}/20</text>
     </view>
