@@ -15,12 +15,15 @@
   <view class="form-section">
     <view class="section-title">卡组名称 *</view>
     <input 
-      class="input" 
+      class="input {{isDuplicate ? 'error' : ''}}" 
       placeholder="请输入卡组名称" 
       maxlength="20"
       value="{{deckName}}"
       bindinput="onNameInput"
     />
+    <view class="error-tip" wx:if="{{isDuplicate}}">
+      <text>⚠️ 该名称已存在，请使用其他名称</text>
+    </view>
   </view>
 
   <!-- 选择来源 -->

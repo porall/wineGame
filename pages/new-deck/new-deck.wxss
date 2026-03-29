@@ -92,6 +92,18 @@ page {
   color: rgba(255, 255, 255, 0.4);
 }
 
+.input.error {
+  border-color: #ff4757;
+}
+
+/* 错误提示 */
+.error-tip {
+  font-size: 24rpx;
+  color: #ff4757;
+  margin-top: 12rpx;
+  padding: 0 10rpx;
+}
+
 /* 来源选择按钮 */
 .source-btn {
   display: flex;

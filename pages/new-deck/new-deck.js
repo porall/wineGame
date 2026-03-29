@@ -124,6 +124,7 @@ Page({
     cardInput: '',
     cards: [],
     canSave: false,
+    isDuplicate: false, // 名称是否重复
     // 选择来源相关
     showSourcePicker: false,
     sourceOptions: buildSourceOptions()
@@ -156,10 +157,27 @@ Page({
    * 监听卡组名称输入
    */
   onNameInput(e) {
-    const name = e.detail.value;
+    const name = e.detail.value.trim();
+    const trimmedName = name;
+    
+    // 检测名称是否重复
+    const config = wx.getStorageSync('deckConfig') || { custom: [] };
+    const existingDecks = config.custom || [];
+    
+    let isDuplicate = false;
+    for (let i = 0; i < existingDecks.length; i++) {
+      // 编辑模式下跳过自身
+      if (this.data.isEdit && this.data.editIndex === i) continue;
+      if (existingDecks[i].name === trimmedName) {
+        isDuplicate = true;
+        break;
+      }
+    }
+    
     this.setData({
       deckName: name,
-      canSave: name.trim().length > 0 && this.data.cards.length > 0
+      isDuplicate: isDuplicate,
+      canSave: name.length > 0 && this.data.cards.length > 0 && !isDuplicate
     });
   },
 
@@ -261,10 +279,24 @@ Page({
   saveDeck() {
     if (!this.data.canSave) return;
 
-    const config = wx.getStorageSync('deckConfig') || {
-      official: { statement: true, action: true, interaction: true, hell: true },
-      custom: []
-    };
+    // 再次检测重复（防止直接点击保存按钮）
+    const config = wx.getStorageSync('deckConfig') || { custom: [] };
+    const existingDecks = config.custom || [];
+    const trimmedName = this.data.deckName.trim();
+
+    for (let i = 0; i < existingDecks.length; i++) {
+      if (this.data.isEdit && this.data.editIndex === i) continue;
+      if (existingDecks[i].name === trimmedName) {
+        wx.showToast({ title: '该名称已存在', icon: 'none' });
+        return;
+      }
+    }
+
+    // 初始化配置
+    if (!config.official) {
+      config.official = { statement: true, action: true, interaction: true, hell: true };
+    }
+    if (!config.custom) config.custom = [];
 
     const newDeck = {
       id: Date.now().toString(),
