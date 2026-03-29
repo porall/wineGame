@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/login/login",
     "pages/index/index",
-    "pages/user/user"
+    "pages/new-deck/new-deck",
+    "pages/deck-detail/deck-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -33,5 +33,6 @@
   "useExtendedLib": {
     "weui": true
   },
+ 
   "sitemapLocation": "sitemap.json"
 }

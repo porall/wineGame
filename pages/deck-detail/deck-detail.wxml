@@ -1,0 +1,68 @@
+<!-- 页面容器 -->
+<view class="page-container">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <view class="header-left">
+      <view class="back-button" bindtap="goBack">‹</view>
+      <text class="page-title">{{deck.name}}</text>
+    </view>
+    <view class="header-right">
+      <view class="add-card-button" bindtap="openModal">
+        <text class="add-card-icon">+</text>
+        <text>新建卡牌</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 卡牌列表区域 -->
+  <view class="content-area">
+    <scroll-view class="cards-scrollview" scroll-y="true">
+      <!-- 卡牌网格 -->
+      <view class="cards-grid" wx:if="{{deck.cards.length > 0}}">
+        <view class="card-item" wx:for="{{deck.cards}}" wx:key="index">
+          <text class="card-content">{{item}}</text>
+        </view>
+      </view>
+      
+      <!-- 空状态提示 -->
+      <view class="empty-state" wx:else>
+        <text class="empty-icon">📚</text>
+        <text class="empty-text">暂无卡牌</text>
+        <text class="empty-hint">点击右上角按钮添加卡牌</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 新建卡牌模态框 -->
+<view class="modal-overlay {{showModal ? 'visible' : ''}}" bindtap="closeModal"></view>
+<view class="modal {{showModal ? 'visible' : ''}}">
+  <!-- 模态框拖拽手柄 -->
+  <view class="modal-handle"></view>
+  
+  <!-- 模态框头部 -->
+  <view class="modal-header">
+    <text class="modal-title">新建卡牌</text>
+    <view class="modal-close-button" bindtap="closeModal">×</view>
+  </view>
+  
+  <!-- 模态框内容 -->
+  <view class="modal-body">
+    <view class="input-container">
+      <textarea 
+        class="card-textarea" 
+        placeholder="输入卡牌内容，不超过20字" 
+        maxlength="20"
+        value="{{cardContent}}"
+        bindinput="onCardInput"
+      />
+      <text class="char-counter">{{cardContent.length}}/20</text>
+    </view>
+  </view>
+
+  <!-- 模态框底部 -->
+  <view class="modal-footer">
+    <view class="cancel-button" bindtap="closeModal">取消</view>
+    <view class="confirm-button {{canConfirm ? 'active' : 'disabled'}}" bindtap="addCard">确认</view>
+  </view>
+</view>

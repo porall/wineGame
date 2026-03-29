@@ -1,0 +1,101 @@
+<!-- 新建卡组页面 - 与首页统一风格 -->
+<view class="container">
+  <!-- 标题 -->
+  <view class="header">
+    <view class="header-center">
+      <text class="title">{{isEdit ? '编辑卡组' : '新建卡组'}}</text>
+      <text class="subtitle">创建你的专属卡组</text>
+    </view>
+    <view class="back-btn" bindtap="goBack">
+      <text class="back-icon">‹</text>
+    </view>
+  </view>
+
+  <!-- 卡组名称 -->
+  <view class="form-section">
+    <view class="section-title">卡组名称 *</view>
+    <input 
+      class="input {{isDuplicate ? 'error' : ''}}" 
+      placeholder="请输入卡组名称" 
+      maxlength="20"
+      value="{{deckName}}"
+      bindinput="onNameInput"
+    />
+    <view class="error-tip" wx:if="{{isDuplicate}}">
+      <text>⚠️ 该名称已存在，请使用其他名称</text>
+    </view>
+  </view>
+
+  <!-- 选择来源 -->
+  <view class="form-section">
+    <view class="section-title">选择来源</view>
+    <view class="source-btn" bindtap="openSourcePicker">
+      <text class="source-icon">📥</text>
+      <text class="source-text">{{cards.length > 0 ? '已选择 ' + cards.length + ' 张卡牌，点击重新选择' : '从官方卡组复制'}}</text>
+      <text class="source-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 卡牌列表 -->
+  <view class="form-section">
+    <view class="section-title">卡牌内容 ({{cards.length}}/100)</view>
+    <view class="card-input-wrap">
+      <input 
+        class="card-input" 
+        placeholder="输入卡牌内容，按回车添加"
+        maxlength="50"
+        value="{{cardInput}}"
+        bindinput="onCardInput"
+        confirm-type="done"
+        bindconfirm="addCard"
+      />
+      <view class="add-btn" bindtap="addCard">添加</view>
+    </view>
+    
+    <view class="card-list" wx:if="{{cards.length > 0}}">
+      <view 
+        wx:for="{{cards}}" 
+        wx:key="index"
+        class="card-tag"
+      >
+        <text class="card-text">{{item}}</text>
+        <text class="delete" catchtap="deleteCard" data-index="{{index}}">×</text>
+      </view>
+    </view>
+    <view class="empty-tip" wx:else>
+      <text>还没有添加卡牌，快来添加吧</text>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="bottom-bar">
+    <view 
+      class="save-btn {{canSave ? 'active' : 'disabled'}}"
+      bindtap="saveDeck"
+    >{{isEdit ? '保存修改' : '创建卡组'}}</view>
+  </view>
+
+  <!-- 来源选择器 -->
+  <view class="picker-mask {{showSourcePicker ? 'show' : ''}}" bindtap="closeSourcePicker"></view>
+  <view class="source-picker {{showSourcePicker ? 'show' : ''}}">
+    <view class="picker-header">
+      <text class="picker-title">选择卡组来源</text>
+      <text class="picker-close" bindtap="closeSourcePicker">✕</text>
+    </view>
+    <scroll-view class="picker-content" scroll-y>
+      <view 
+        class="picker-option"
+        wx:for="{{sourceOptions}}"
+        wx:key="key"
+        bindtap="selectSource"
+        data-key="{{item.key}}"
+      >
+        <view class="option-icon">{{item.icon || '📋'}}</view>
+        <view class="option-info">
+          <text class="option-name">{{item.name}}</text>
+          <text class="option-desc">{{item.desc}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>
