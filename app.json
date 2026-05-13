@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/square/square",
+    "pages/profile/profile",
     "pages/main/main",
     "pages/new-deck/new-deck",
     "pages/deck-detail/deck-detail"
@@ -19,13 +21,19 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "游戏",
+        "text": "首页",
         "iconPath": "images/game.png",
         "selectedIconPath": "images/game-active.png"
       },
       {
-        "pagePath": "pages/main/main",
-        "text": "我的卡组",
+        "pagePath": "pages/square/square",
+        "text": "广场",
+        "iconPath": "images/square.png",
+        "selectedIconPath": "images/square-active.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
         "iconPath": "images/user.png",
         "selectedIconPath": "images/user-active.png"
       }
