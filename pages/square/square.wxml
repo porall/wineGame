@@ -1,0 +1,72 @@
+<!--pages/square/square.wxml-->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索卡组/作者..." 
+      value="{{searchQuery}}"
+      bindinput="onSearchInput"
+      bindconfirm="onSearch"
+    />
+    <icon class="search-icon" type="search" size="20"/>
+  </view>
+
+  <!-- Tab 栏 -->
+  <view class="tab-bar">
+    <view 
+      wx:for="{{tabs}}" 
+      wx:key="key"
+      class="tab {{currentTab === item.key ? 'active' : ''}}"
+      bindtap="onTabChange"
+      data-tab="{{item.key}}"
+    >
+      {{item.name}}
+    </view>
+  </view>
+
+  <!-- 卡组列表 -->
+  <scroll-view class="deck-list" scroll-y enable-flex="true">
+    <view wx:if="{{loading && decks.length === 0}}" class="loading">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:elif="{{empty}}" class="empty">
+      <text>暂无卡组，快来创建第一个吧~</text>
+      <button class="btn-create" bindtap="goToCreate">创建卡组</button>
+    </view>
+
+    <view wx:else class="deck-grid">
+      <view 
+        wx:for="{{decks}}" 
+        wx:key="_id"
+        class="deck-card"
+        bindtap="goToDetail"
+        data-id="{{item._id}}"
+      >
+        <view class="deck-icon" style="background: {{item.iconBg || '#FF6B6B'}}">
+          {{item.icon || '🎴'}}
+        </view>
+        <view class="deck-name">{{item.name}}</view>
+        <view class="deck-author">by {{item.author.name || '匿名'}}</view>
+        <view class="deck-stats">
+          <text class="stat" catchtap="onLike" data-id="{{item._id}}" data-index="{{index}}">❤️ {{item.likes || 0}}</text>
+          <text class="stat">📥 {{item.downloads || 0}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{loading && decks.length > 0}}" class="loading-more">
+      <text>加载中...</text>
+    </view>
+
+    <view wx:if="{{!hasMore && decks.length > 0}}" class="no-more">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 创建按钮 -->
+  <view class="create-btn" bindtap="goToCreate">
+    <text>+ 创建卡组</text>
+  </view>
+</view>
